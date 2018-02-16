@@ -1,0 +1,20 @@
+<ul id="eventseasy" class="<?= $this->class ?> eventseasy_<?= $this->mode; ?>">
+    <?php foreach($this->calendars as $arrCalendar): ?>
+    <li class="<?= $this->class ?>_link">
+        <a class="<?= $arrCalendar['class']; ?>" href="<?= $arrCalendar['href']; ?>" title="<?= $arrCalendar['title']; ?>" <?= $arrCalendar['icon']; ?>>
+            <?= $arrCalendar['label']; ?>
+        </a>
+    </li>
+    <?php endforeach; ?>
+</ul>
+
+<?php if ($this->mode === 'inject'): ?>
+<script>
+    window.addEvent('domready', function () {
+        new EventsEasy({
+            mode: '<?= $this->mode; ?>',
+            delay: 500
+        });
+    });
+</script>
+<?php endif; ?>
