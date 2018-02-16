@@ -1,10 +1,10 @@
 <?php
 /**
- * Contao 3 Extension [mhgEventsEasy]
+ * Contao 3 Extension [mhgEventEasy]
  *
  * Copyright (c) 2018 Medienhaus Gersöne UG (haftungsbeschränkt) | Pierre Gersöne
  *
- * @package     mhgEventsEasy
+ * @package     mhgEventEasy
  * @author      Pierre Gersöne <mail@medienhaus-gersoene.de>
  * @link        https://www.medienhaus-gersoene.de Medienhaus Gersöne - Agentur für Neue Medien: Web, Design & Marketing
  * @license     LGPL-3.0+
@@ -14,7 +14,7 @@
  */
 ClassLoader::addClasses(array(
     // Classes
-    'mhg\EventsEasy' => 'system/modules/mhgEventsEasy/classes/EventsEasy.php',
+    'mhg\EventEasy' => 'system/modules/mhgEventEasy/classes/EventEasy.php',
 ));
 
 
@@ -23,5 +23,5 @@ ClassLoader::addClasses(array(
  */
 TemplateLoader::addFiles(array(
     // Backend
-    'be_eventseasy' => 'system/modules/mhgEventsEasy/templates/backend',
+    'be_eventeasy' => 'system/modules/mhgEventEasy/templates/backend',
 ));

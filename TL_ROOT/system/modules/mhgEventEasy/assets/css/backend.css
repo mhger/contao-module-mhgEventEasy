@@ -2,26 +2,26 @@
     position: relative;
 }
 
-#tl_navigation .eventseasy_inject {
+#tl_navigation .eventeasy_inject {
     margin-bottom: 10px;
 }
 
-#tl_navigation .eventseasy_inject li {
+#tl_navigation .eventeasy_inject li {
     padding: 0 0 0 20px;
     overflow: hidden;
     width: auto;
 }
 
-#tl_navigation .eventseasy_inject li a {
+#tl_navigation .eventeasy_inject li a {
     padding-left: 16px;
 }
 
-#eventseasy,
-#eventseasy.eventseasy_doNotLaunch {
+#eventeasy,
+#eventeasy.eventeasy_doNotLaunch {
     display: none;
 }
 
-#eventseasy.ready {
+#eventeasy.ready {
     display: block;
 }
 

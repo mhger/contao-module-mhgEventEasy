@@ -1,10 +1,10 @@
 <?php
 /**
- * Contao 3 Extension [mhgEventsEasy]
+ * Contao 3 Extension [mhgEventEasy]
  *
  * Copyright (c) 2018 Medienhaus Gersöne UG (haftungsbeschränkt) | Pierre Gersöne
  *
- * @package     mhgEventsEasy
+ * @package     mhgEventEasy
  * @author      Pierre Gersöne <mail@medienhaus-gersoene.de>
  * @link        https://www.medienhaus-gersoene.de Medienhaus Gersöne - Agentur für Neue Medien: Web, Design & Marketing
  * @license     LGPL-3.0+
@@ -12,14 +12,14 @@
 /**
  * alter DCA palettes
  */
-mhg\Dca::modifyPalettes('jumpTo;', 'jumpTo;{eventsEasy_legend},eventsEasyTitle,eventsEasyHide;', 'tl_calendar');
+mhg\Dca::modifyPalettes('jumpTo;', 'jumpTo;{eventEasy_legend},eventEasyTitle,eventEasyHide;', 'tl_calendar');
 
 
 /**
  * add DCA fields
  */
-mhg\Dca::addField('tl_calendar', 'eventsEasyTitle', array(
-    'label' => &$GLOBALS['TL_LANG']['tl_calendar']['eventsEasyTitle'],
+mhg\Dca::addField('tl_calendar', 'eventEasyTitle', array(
+    'label' => &$GLOBALS['TL_LANG']['tl_calendar']['eventEasyTitle'],
     'exclude' => true,
     'search' => true,
     'inputType' => 'text',
@@ -27,8 +27,8 @@ mhg\Dca::addField('tl_calendar', 'eventsEasyTitle', array(
     'sql' => "varchar(100) NOT NULL default ''"
 ));
 
-mhg\Dca::addField('tl_calendar', 'eventsEasyHide', array(
-    'label' => &$GLOBALS['TL_LANG']['tl_calendar']['eventsEasyHide'],
+mhg\Dca::addField('tl_calendar', 'eventEasyHide', array(
+    'label' => &$GLOBALS['TL_LANG']['tl_calendar']['eventEasyHide'],
     'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => array('tl_class' => 'w50 clr'),

@@ -1,10 +1,10 @@
 <?php
 /**
- * Contao 3 Extension [mhgEventsEasy]
+ * Contao 3 Extension [mhgEventEasy]
  *
  * Copyright (c) 2018 Medienhaus Gersöne UG (haftungsbeschränkt) | Pierre Gersöne
  *
- * @package     mhgEventsEasy
+ * @package     mhgEventEasy
  * @author      Pierre Gersöne <mail@medienhaus-gersoene.de>
  * @link        https://www.medienhaus-gersoene.de Medienhaus Gersöne - Agentur für Neue Medien: Web, Design & Marketing
  * @license     LGPL-3.0+
@@ -14,15 +14,15 @@ namespace mhg;
 
 
 /**
- * class mhg\EventsEasy
+ * class mhg\EventEasy
  */
-class EventsEasy extends \Contao\Backend {
+class EventEasy extends \Contao\Backend {
 
     /**
-     * Is EventsEasy enabled
+     * Is EventEasy enabled
      * @var     bool
      */
-    protected $blnEventsEasyEnabled = true;
+    protected $blnEventEasyEnabled = true;
 
     /**
      * Initialize the object, import the user class
@@ -31,8 +31,8 @@ class EventsEasy extends \Contao\Backend {
         $this->import('BackendUser', 'User');
         parent::__construct();
 
-        if (!$this->User->hasAccess('create', 'calendarp') || $this->User->eventsEasyEnable != 1) {
-            $this->blnEventsEasyEnabled = false;
+        if (!$this->User->hasAccess('create', 'calendarp') || $this->User->eventEasyEnable != 1) {
+            $this->blnEventEasyEnabled = false;
         }
     }
 
@@ -43,19 +43,19 @@ class EventsEasy extends \Contao\Backend {
      * @return  boolean
      */
     public function loadLanguageFileHook($strName, $strLanguage) {
-        if (!$this->blnEventsEasyEnabled) {
+        if (!$this->blnEventEasyEnabled) {
             return false;
         }
 
-        if ($this->User->eventsEasyEnable == 1) {
-            $GLOBALS['TL_CSS'][] = 'system/modules/mhgEventsEasy/assets/css/backend.css?v='.time().'|screen';
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/mhgEventsEasy/assets/js/backend.js?v='.time();
+        if ($this->User->eventEasyEnable == 1) {
+            $GLOBALS['TL_CSS'][] = 'system/modules/mhgEventEasy/assets/css/backend.css?v='.time().'|screen';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/mhgEventEasy/assets/js/backend.js?v='.time();
 
             \System::loadLanguageFile('tl_calendar');
         }
 
         // make sure the hook is only executed once
-        unset($GLOBALS['TL_HOOKS']['loadLanguageFile']['EventsEasyHook']);
+        unset($GLOBALS['TL_HOOKS']['loadLanguageFile']['EventEasyHook']);
 
         return true;
     }
@@ -68,7 +68,7 @@ class EventsEasy extends \Contao\Backend {
      * @return  string
      */
     public function parseBackendTemplate($strContent, $strTemplate) {
-        if (!$this->blnEventsEasyEnabled || $this->User->eventsEasyMode !== 'inject') {
+        if (!$this->blnEventEasyEnabled || $this->User->eventEasyMode !== 'inject') {
             return $strContent;
         }
 
@@ -91,9 +91,9 @@ class EventsEasy extends \Contao\Backend {
             return '';
         }
 
-        $objTemplate = new \BackendTemplate('be_eventseasy');
-        $objTemplate->mode = $this->User->eventsEasyMode;
-        $objTemplate->class = 'eventseasy_level_2';
+        $objTemplate = new \BackendTemplate('be_eventeasy');
+        $objTemplate->mode = $this->User->eventEasyMode;
+        $objTemplate->class = 'eventeasy_level_2';
         $objTemplate->calendars = $arrCalendars;
         $strReturn = $objTemplate->parse();
 
@@ -121,16 +121,16 @@ class EventsEasy extends \Contao\Backend {
     protected function getCalendars() {
         $arrCalendars = array();
 
-        /* get all news archives */
+        // get all event calendars
         $objCalendars = \Database::getInstance()
-                ->prepare("SELECT id, title, eventsEasyTitle FROM tl_calendar WHERE eventsEasyHide<>1 AND title <> '' ORDER BY title ASC")
+                ->prepare("SELECT id, title, eventEasyTitle FROM tl_calendar WHERE eventEasyHide<>1 AND title <> '' ORDER BY title ASC")
                 ->execute();
 
         while ($objCalendars->next()) {
             $strKey = 'calendarEvents' . $objCalendars->id;
             $arrCalendars[$strKey] = array(
                 'title' => $objCalendars->title,
-                'label' => empty($objCalendars->eventsEasyTitle) ? $objCalendars->title : $objCalendars->eventsEasyTitle,
+                'label' => empty($objCalendars->eventEasyTitle) ? $objCalendars->title : $objCalendars->eventEasyTitle,
                 'href' => \Environment::get('script') . '?do=calendar&amp;table=tl_calendar_events&amp;id=' . $objCalendars->id . '&amp;rt=' . REQUEST_TOKEN,
                 'class' => 'navigation calendarEvents'
             );
@@ -147,20 +147,20 @@ class EventsEasy extends \Contao\Backend {
      * @return  array
      */
     public function getUserNavigationHook($arrModules, $blnShowAll) {
-        if (!$this->blnEventsEasyEnabled) {
+        if (!$this->blnEventEasyEnabled) {
             return $arrModules;
         }
 
         // if not backend_mode, get out
-        if ($this->User->eventsEasyMode != 'mod') {
+        if ($this->User->eventEasyMode != 'mod') {
             // add some CSS classes to the content module
-            $arrModules['content']['class'].= ' eventseasy_toggle' .
-                    ($arrModules['content']['icon'] == 'modPlus.gif' ? ' eventseasy_collapsed' : ' eventseasy_expanded');
+            $arrModules['content']['class'].= ' eventeasy_toggle' .
+                    ($arrModules['content']['icon'] == 'modPlus.gif' ? ' eventeasy_collapsed' : ' eventeasy_expanded');
 
             return $arrModules;
         }
 
-        // get the news archive. if empty, return standard
+        // get event calendars, return standard and get out if empty
         $arrCalendars = $this->getCalendars();
         if (empty($arrCalendars) || !is_array($arrCalendars)) {
             return $arrModules;
@@ -180,8 +180,8 @@ class EventsEasy extends \Contao\Backend {
         );
 
         // Insert at a given position if reference is given OR prepend
-        if ($this->User->eventsEasyReference) {
-            $intPosition = array_search(\BackendUser::getInstance()->eventsEasyReference, array_keys($arrModules));
+        if ($this->User->eventEasyReference) {
+            $intPosition = array_search(\BackendUser::getInstance()->eventEasyReference, array_keys($arrModules));
             $intPosition++;
             array_insert($arrModules, $intPosition, $arrNavigation);
 
