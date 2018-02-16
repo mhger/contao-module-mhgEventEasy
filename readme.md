@@ -1,4 +1,4 @@
-# Contao Extension [mhgEventsEasy]
+# Contao Extension [mhgEventEasy]
 
 This extension adds easy access links for event calendars to the Contao backend.
 
