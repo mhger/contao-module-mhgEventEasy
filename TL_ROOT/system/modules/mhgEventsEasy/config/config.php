@@ -12,13 +12,9 @@
 /**
  * Register backend hooks
  */
-if (TL_MODE == 'BE') {
-    if (!(($_GET['do'] == 'repository_manager' && $_GET['uninstall'] == 'mhgEventsEasy') ||
-            (strpos($_SERVER['PHP_SELF'], 'contao/install.php') !== false))) {
-
-        $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('mhg\EventsEasy', 'parseBackendTemplate');
-        $GLOBALS['TL_HOOKS']['loadLanguageFile']['NewsEasyHook'] = array('mhg\EventsEasy', 'loadLanguageFileHook');
-        $GLOBALS['TL_HOOKS']['getUserNavigation'][] = array('mhg\EventsEasy', 'getUserNavigationHook');
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('mhg\EventsEasy', 'loadDataContainerHook');
-    }
+if (TL_MODE == 'BE' && Input::get('do') !== 'repository_manager' && Input::get('uninstall') !== 'mhgEventsEasy') {
+    $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('mhg\EventsEasy', 'parseBackendTemplate');
+    $GLOBALS['TL_HOOKS']['loadLanguageFile']['EventsEasyHook'] = array('mhg\EventsEasy', 'loadLanguageFileHook');
+    $GLOBALS['TL_HOOKS']['getUserNavigation'][] = array('mhg\EventsEasy', 'getUserNavigationHook');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('mhg\EventsEasy', 'loadDataContainerHook');
 }

@@ -16,15 +16,15 @@
     padding-left: 16px;
 }
 
-#newseasy,
-#newseasy.eventseasy_doNotLaunch {
+#eventseasy,
+#eventseasy.eventseasy_doNotLaunch {
     display: none;
 }
 
-#newseasy.ready {
+#eventseasy.ready {
     display: block;
 }
 
-a.navigation.eventCalendar {
+a.navigation.calendarEvents {
     background-image: url('../img/edit.gif');
 }

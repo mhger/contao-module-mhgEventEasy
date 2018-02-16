@@ -12,7 +12,7 @@
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_calendar']['newsArchives'] = 'Nachrichtenarchive';
+$GLOBALS['TL_LANG']['tl_calendar']['calendarEvents'] = 'Veranstaltungen';
 $GLOBALS['TL_LANG']['tl_calendar']['eventsEasy_legend'] = 'NewsEasy-Einstellungen';
 /**
  * Table tl_news_archive

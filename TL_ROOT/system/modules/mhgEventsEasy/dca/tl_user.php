@@ -48,13 +48,15 @@ mhg\Dca::addField('tl_user', 'eventsEasyReference', array(
 
 
 /**
- * Class tl_user_newseasy
+ * Class tl_user_eventseasy
  */
-class tl_user_newseasy extends Backend {
+class tl_user_eventseasy extends Backend {
 
     /**
      * Build the palette string
-     * @param DataContainer
+     * 
+     * @param   DataContainer
+     * @return  void
      */
     public function buildPalette(DataContainer $dc) {
         $objUser = \Database::getInstance()->prepare('SELECT * FROM tl_user WHERE id=?')

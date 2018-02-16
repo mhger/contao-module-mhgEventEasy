@@ -14,7 +14,7 @@
  */
 ClassLoader::addClasses(array(
     // Classes
-    'mhg\NewsEasy' => 'system/modules/mhgEventsEasy/classes/EventsEasy.php',
+    'mhg\EventsEasy' => 'system/modules/mhgEventsEasy/classes/EventsEasy.php',
 ));
 
 
@@ -23,5 +23,5 @@ ClassLoader::addClasses(array(
  */
 TemplateLoader::addFiles(array(
     // Backend
-    'be_newseasy' => 'system/modules/mhgEventsEasy/templates/backend',
+    'be_eventseasy' => 'system/modules/mhgEventsEasy/templates/backend',
 ));

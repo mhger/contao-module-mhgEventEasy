@@ -48,8 +48,8 @@ class EventsEasy extends \Contao\Backend {
         }
 
         if ($this->User->eventsEasyEnable == 1) {
-            $GLOBALS['TL_CSS'][] = 'system/modules/mhgEventsEasy/assets/css/backend.css|screen';
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/mhgEventsEasy/assets/js/backend.js';
+            $GLOBALS['TL_CSS'][] = 'system/modules/mhgEventsEasy/assets/css/backend.css?v='.time().'|screen';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/mhgEventsEasy/assets/js/backend.js?v='.time();
 
             \System::loadLanguageFile('tl_calendar');
         }
@@ -68,7 +68,7 @@ class EventsEasy extends \Contao\Backend {
      * @return  string
      */
     public function parseBackendTemplate($strContent, $strTemplate) {
-        if (!$this->blnEventsEasyEnabled) {
+        if (!$this->blnEventsEasyEnabled || $this->User->eventsEasyMode !== 'inject') {
             return $strContent;
         }
 
@@ -81,6 +81,7 @@ class EventsEasy extends \Contao\Backend {
 
     /**
      * Generate the container content
+     * 
      * @return string
      */
     protected function generateContainerContent() {
@@ -93,7 +94,7 @@ class EventsEasy extends \Contao\Backend {
         $objTemplate = new \BackendTemplate('be_eventseasy');
         $objTemplate->mode = $this->User->eventsEasyMode;
         $objTemplate->class = 'eventseasy_level_2';
-        $objTemplate->archives = $arrCalendars;
+        $objTemplate->calendars = $arrCalendars;
         $strReturn = $objTemplate->parse();
 
         return $strReturn;
@@ -126,12 +127,12 @@ class EventsEasy extends \Contao\Backend {
                 ->execute();
 
         while ($objCalendars->next()) {
-            $strKey = 'eventCalendar' . $objCalendars->id;
+            $strKey = 'calendarEvents' . $objCalendars->id;
             $arrCalendars[$strKey] = array(
                 'title' => $objCalendars->title,
                 'label' => empty($objCalendars->eventsEasyTitle) ? $objCalendars->title : $objCalendars->eventsEasyTitle,
-                'href' => \Environment::get('script') . '?do=news&amp;table=tl_calendar_events&amp;id=' . $objCalendars->id . '&amp;rt=' . REQUEST_TOKEN,
-                'class' => 'navigation eventCalendar'
+                'href' => \Environment::get('script') . '?do=calendar&amp;table=tl_calendar_events&amp;id=' . $objCalendars->id . '&amp;rt=' . REQUEST_TOKEN,
+                'class' => 'navigation calendarEvents'
             );
         }
 
@@ -166,14 +167,14 @@ class EventsEasy extends \Contao\Backend {
         }
 
         $session = $this->Session->getData();
-        $isHidden = isset($session['backend_modules']['eventCalendar']) && $session['backend_modules']['eventCalendar'] < 1;
+        $isHidden = isset($session['backend_modules']['calendarEvents']) && $session['backend_modules']['calendarEvents'] < 1;
 
         $arrNavigation = array(
-            'eventCalendar' => array(
+            'calendarEvents' => array(
                 'icon' => $isHidden ? 'modPlus.gif' : 'modMinus.gif',
                 'title' => $isHidden ? $GLOBALS['TL_LANG']['MSC']['expandNode'] : $GLOBALS['TL_LANG']['MSC']['collapseNode'],
-                'label' => $GLOBALS['TL_LANG']['tl_news_archive']['eventCalendar'],
-                'href' => $this->addToUrl('mtg=eventCalendar'),
+                'label' => $GLOBALS['TL_LANG']['tl_calendar']['calendarEvents'],
+                'href' => $this->addToUrl('mtg=calendarEvents'),
                 'modules' => $isHidden ? false : $arrCalendars
             )
         );
