@@ -20,14 +20,16 @@ $GLOBALS['TL_DCA']['tl_user']['config']['onload_callback'][] = array('tl_user_ev
  */
 mhg\Dca::addField('tl_user', 'eventEasyEnable', array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['eventEasyEnable'],
+    'default' => '',
     'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => array('submitOnChange' => true, 'tl_class' => 'tl_checkbox_single_container'),
-    'sql' => "char(1) NOT NULL default '0'"
+    'sql' => "char(1) NOT NULL default ''"
 ));
 
 mhg\Dca::addField('tl_user', 'eventEasyMode', array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['eventEasyMode'],
+    'default' => 'inject',
     'exclude' => true,
     'inputType' => 'select',
     'options' => array('inject', 'mod'),
@@ -53,36 +55,32 @@ mhg\Dca::addField('tl_user', 'eventEasyReference', array(
 class tl_user_eventeasy extends Backend {
 
     /**
-     * Build the palette string
+     * Build the DCA palette string
      * 
-     * @param   DataContainer
+     * @param   object $dc DataContainer
      * @return  void
      */
     public function buildPalette(DataContainer $dc) {
         $objUser = \Database::getInstance()->prepare('SELECT * FROM tl_user WHERE id=?')
                 ->execute($dc->id);
 
-        foreach ($GLOBALS['TL_DCA']['tl_user']['palettes'] as $palette => $v) {
-            if ($palette == '__selector__') {
-                continue;
-            }
-
-            if (BackendUser::getInstance()->hasAccess('create', 'calendarp')) {
-                $arrPalettes = explode(';', $v);
-                $arrPalettes[] = '{eventEasy_legend},eventEasyEnable;';
-                $GLOBALS['TL_DCA']['tl_user']['palettes'][$palette] = implode(';', $arrPalettes);
-            }
+        // alter DCA pallettes 
+        if (BackendUser::getInstance()->hasAccess('create', 'calendarp')) {
+            mhg\Dca::appendPalettes('{eventEasy_legend},eventEasyEnable;', 'tl_user');
         }
 
-        // extend selector
-        $GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'eventEasyEnable';
+        // add selector
+        mhg\Dca::addSelector('eventEasyEnable', 'tl_user');
 
-        // extend subpalettes
-        $strSubpalette = 'eventEasyMode';
+        // extend subpalette if enabled
+        if ($objUser->eventEasyEnable) {
+            $strSubpalette = 'eventEasyMode';
 
-        if ($objUser->eventEasyMode == 'mod') {
-            $strSubpalette.= ',eventEasyReference';
+            if ($objUser->eventEasyMode == 'mod') {
+                $strSubpalette.= ',eventEasyReference';
+            }
+
+            mhg\Dca::appendPalettes($strSubpalette, 'tl_user', 'eventEasyEnable', true);
         }
-        $GLOBALS['TL_DCA']['tl_user']['subpalettes']['eventEasyEnable'] = $strSubpalette;
     }
 }
