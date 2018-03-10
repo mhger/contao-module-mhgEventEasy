@@ -12,7 +12,7 @@
 /**
  * alter DCA palettes
  */
-mhg\Dca::modifyPalettes('jumpTo;', 'jumpTo;{eventEasy_legend},eventEasyTitle,eventEasyHide;', 'tl_calendar');
+mhg\Dca::alterPalettes('tl_calendar', 'jumpTo;', 'jumpTo;{eventEasy_legend},eventEasyTitle,eventEasyHide;');
 
 
 /**
