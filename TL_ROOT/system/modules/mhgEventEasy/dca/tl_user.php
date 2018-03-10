@@ -10,10 +10,9 @@
  * @license     LGPL-3.0+
  */
 /**
- * Modify DCA palette
+ * alter DCA palette
  */
 $GLOBALS['TL_DCA']['tl_user']['config']['onload_callback'][] = array('tl_user_eventeasy', 'buildPalette');
-
 
 /**
  * add DCA fields
@@ -66,11 +65,11 @@ class tl_user_eventeasy extends Backend {
 
         // alter DCA pallettes 
         if (BackendUser::getInstance()->hasAccess('create', 'calendarp')) {
-            mhg\Dca::appendPalettes('{eventEasy_legend},eventEasyEnable;', 'tl_user');
+            mhg\Dca::appendPalettes('tl_user', '{eventEasy_legend},eventEasyEnable;');
         }
 
         // add selector
-        mhg\Dca::addSelector('eventEasyEnable', 'tl_user');
+        mhg\Dca::addSelector('tl_user', 'eventEasyEnable');
 
         // extend subpalette if enabled
         if ($objUser->eventEasyEnable) {
@@ -80,7 +79,7 @@ class tl_user_eventeasy extends Backend {
                 $strSubpalette.= ',eventEasyReference';
             }
 
-            mhg\Dca::appendPalettes($strSubpalette, 'tl_user', 'eventEasyEnable', true);
+            mhg\Dca::appendPalettes('tl_user', $strSubpalette, 'eventEasyEnable', true);
         }
     }
 }
